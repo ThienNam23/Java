@@ -169,7 +169,6 @@ public class JDBCPrograming {
 			rs.close();
 			pstmt.close();
 			stmt.close();
-			conn.setAutoCommit(true);
 		}
 		catch (SQLException e) {
 			// TODO: handle exception
