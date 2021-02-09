@@ -135,10 +135,10 @@ public class JDBCPrograming {
 				{0, 1, 1, 1, 0, 1, 0, 1, 1, 1}
 			};
 			
-			for (int i = 1; i < 11; i++) {
-				pstmt.setString(1, (String)dataSet[0][i - 1]);
-				pstmt.setInt(2, (int)dataSet[1][i - 1]);
-				pstmt.setInt(3, (int)dataSet[2][i - 1]);
+			for (int i = 0; i < 10; i++) {
+				pstmt.setString(1, (String)dataSet[0][i]);
+				pstmt.setInt(2, (int)dataSet[1][i]);
+				pstmt.setInt(3, (int)dataSet[2][i]);
 				pstmt.addBatch();
 			}
 			int count[] = pstmt.executeBatch();
@@ -190,10 +190,11 @@ public class JDBCPrograming {
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			conn.setAutoCommit(false);
+			
 			// STEP 3: Execute a query
-			//getDataFromDB();
+			getDataFromDB();
 			updateData();
-			//createTable();
+			createTable();
 			
 			// Finally: Clean up environment
 			conn.close();
