@@ -1,5 +1,6 @@
 import java.sql.*;
 
+
 public class JDBCPrograming {
 	// JDBC driver name and DB URL
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -11,6 +12,7 @@ public class JDBCPrograming {
 
 	static Connection conn = null; // Connection object
 	static Statement stmt = null; // SQL statement object
+	static PreparedStatement pstmt = null; // SQL prepare statement object
 	
 	public static void getDataFromDB() {
 		try {
@@ -20,6 +22,7 @@ public class JDBCPrograming {
 			
 			// Get data and extract
 			ResultSet rs = stmt.executeQuery(sql);
+			conn.commit();
 			System.out.println("Statement executed!");
 			
 			System.out.println("\nTabel: myTable - before updated");
@@ -49,20 +52,27 @@ public class JDBCPrograming {
 	public static void updateData() {
 		try {
 			System.out.println("Creating statement...");
-			stmt = conn.createStatement();
-			String sql = "UPDATE myTable " +
-					     "SET name = 'Thien Nam', city = 'Ha Nam', salary = 0 " +
-					     "WHERE id = 30"; // SQL statement
 			
-			int rows = stmt.executeUpdate(sql);
-			System.out.println("Statement excecuted");
-			
+			String sql = "UPDATE myTable SET name = ?, city = ?, salary = ? WHERE id = ?"; // SQL statement
+			// Prepare Statement object
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "Thien Nam");
+			pstmt.setString(2, "Ha Nam");
+			pstmt.setInt(3, 23);
+			pstmt.setInt(4, 30);
+			int rows = pstmt.executeUpdate();
+			conn.commit();
+			System.out.println("here");
+			System.out.println("Statement executed");
 			System.out.println(rows + " row(s) affected!");
 			
 			// Get data and extract
+			stmt = conn.createStatement();
 			sql = "SELECT id, name, city, salary FROM myTable";
+			
 			ResultSet rs = stmt.executeQuery(sql);
-			System.out.println("Statement executed!");
+			conn.commit();
+			System.out.println("SELECT Statement executed!");
 			
 			System.out.println("\nTabel: myTable - after updated");
 			System.out.println(String.format("%3s %20s %20s %8s", "ID", "NAME", "CITY", "SALARY"));
@@ -79,18 +89,25 @@ public class JDBCPrograming {
 			
 			// Recovery database
 			sql = "UPDATE myTable " +
-				     "SET name = '_______', city = '_______', salary = 0 " +
-				     "WHERE id = 30"; // SQL statement
-		
-			stmt.executeUpdate(sql);
+				  "SET name = ?, city = ?, salary = ? " +
+			      "WHERE id = ?"; // SQL statement
+			// Prepare Statement object
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "-------");
+			pstmt.setString(2, "-------");
+			pstmt.setInt(3, 0);
+			pstmt.setInt(4, 30);
+			rows = pstmt.executeUpdate();
+			conn.commit();
+			
 			// Clean-up environment
-			rs.close();
+			//rs.close();
 			stmt.close();
 		}
 		catch (SQLException e) {
 			// TODO: handle exception
-			System.out.println("Failed to get data from DB");
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}
@@ -104,29 +121,33 @@ public class JDBCPrograming {
 						 "age int, " + 
 						 "gender tinyint DEFAULT 0, " + 
 						 "PRIMARY KEY (id) " + 
-						 ")"; // SQL statement
+						 ") AUTO_INCREMENT = 1"; // SQL statement
 			
 			stmt.execute(sql);
+			System.out.println("Table created!");
 			
 			// Insert data to new table: temp_table
-			sql = "INSERT INTO temp_table (id, name, age, gender) " + 
-					"VALUES (1,'Raven',41,0)," + 
-					"		(2,'Ulysses',43,1)," + 
-					"		(3,'Grady',21,1)," + 
-					"		(4,'Avye',34,1)," + 
-					"		(5,'Julian',20,0)," + 
-					"		(6,'Mia',19,1)," + 
-					"		(7,'Vera',21,0)," + 
-					"		(8,'Rebecca',41,1)," + 
-					"		(9,'Maile',41,1)," + 
-					"		(10,'Grady',19,1)";
-			int rows = stmt.executeUpdate(sql);
-			System.out.println(rows + " row(s) affected!");
+			sql = "INSERT INTO temp_table (name, age, gender) VALUES (?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			Object dataSet[][] = new Object[][]{
+				{"Raven", "Ulysses", "Grady", "Avye", "Julian", "Mia", "Vera", "Rebecca", "Maile", "Grady"},
+				{40, 43, 21, 24, 20, 19, 21, 45, 30, 35},
+				{0, 1, 1, 1, 0, 1, 0, 1, 1, 1}
+			};
+			
+			for (int i = 1; i < 11; i++) {
+				pstmt.setString(1, (String)dataSet[0][i - 1]);
+				pstmt.setInt(2, (int)dataSet[1][i - 1]);
+				pstmt.setInt(3, (int)dataSet[2][i - 1]);
+				pstmt.addBatch();
+			}
+			int count[] = pstmt.executeBatch();
+			conn.commit();
 			
 			// Get data and extract
 			sql = "SELECT id, name, age, gender FROM temp_table";
 			ResultSet rs = stmt.executeQuery(sql);
-			System.out.println("Statement executed!");
+			System.out.println("SELECT Statement executed!");
 			
 			System.out.println("\nTable: temp_table");
 			System.out.println(String.format("%3s %20s %3s %8s", "ID", "NAME", "AGE", "GENDER"));
@@ -146,7 +167,9 @@ public class JDBCPrograming {
 			stmt.executeUpdate(sql);
 			// Clean-up environment
 			rs.close();
+			pstmt.close();
 			stmt.close();
+			conn.setAutoCommit(true);
 		}
 		catch (SQLException e) {
 			// TODO: handle exception
@@ -155,6 +178,7 @@ public class JDBCPrograming {
 		}
 		
 	}
+	
 	public static void main(String[] args) {
 		
 		try {
@@ -165,11 +189,11 @@ public class JDBCPrograming {
 			// STEP 2: Open a connection
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			
+			conn.setAutoCommit(false);
 			// STEP 3: Execute a query
-			getDataFromDB();
+			//getDataFromDB();
 			updateData();
-			createTable();
+			//createTable();
 			
 			// Finally: Clean up environment
 			conn.close();
@@ -190,6 +214,9 @@ public class JDBCPrograming {
 				if (stmt != null) {
 					stmt.close();
 				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}
@@ -199,9 +226,7 @@ public class JDBCPrograming {
 				}
 			} catch (Exception e3) {
 				// TODO: handle exception
-			}
-			
+			}		
 		}
 	}
-	
 }
