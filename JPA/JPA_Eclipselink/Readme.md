@@ -1,19 +1,19 @@
-* Basic:
- - POJO: 
+**A. Basic:**
+ *1. POJO:* 
   + Employee.java
- - Services:
+ *2. Services:*
   + CreateEmployee.java
   + DeleteEmployee.java
   + FindEmployee.java
   + UpdateEmployee.java
   
-* NamedQueries:
+**B. NamedQueries:**
  - Named Queries define: 
   + Employee.java - line 12
  - Run:
   + NamedQueries.java
 
-* Advanced Mappings: SINGLE_TABLE, JOINED_TABLE, TABLE_PER_CLASS
+**C. Advanced Mappings: SINGLE_TABLE, JOINED_TABLE, TABLE_PER_CLASS**
  - Entities:
   + Staff.java (super class)
   + NonTeachingStaff.java
@@ -21,15 +21,15 @@
  - Services:
   + SaveClient.java
   
-* JPQL:
+**D. JPQL:**
  - JPQLExample.java
 
-* Entity Relationships:
+**E. Entity Relationships:**
  - put these corresponding anotations above FK properties line:
   + @ManyToOne
   + @OneToMany
   + @OneToOne
   + @manyTomany
   
-* Criteria API:
+**F. Criteria API:**
  - CriteriaAPI.java
