@@ -1,17 +1,17 @@
 **A. Basic:**
- *1. POJO:* 
-  + Employee.java
- *2. Services:*
-  + CreateEmployee.java
-  + DeleteEmployee.java
-  + FindEmployee.java
-  + UpdateEmployee.java
+  * _POJO:_
+    * Employee.java
+  * _Services:_
+    * CreateEmployee.java
+    * DeleteEmployee.java
+    * FindEmployee.java
+    * UpdateEmployee.java
   
 **B. NamedQueries:**
- - Named Queries define: 
-  + Employee.java - line 12
- - Run:
-  + NamedQueries.java
+ * _Named Queries define:_
+    * Employee.java - line 12
+ * _Run:_
+    * NamedQueries.java
 
 **C. Advanced Mappings: SINGLE_TABLE, JOINED_TABLE, TABLE_PER_CLASS**
  - Entities:
@@ -33,3 +33,7 @@
   
 **F. Criteria API:**
  - CriteriaAPI.java
+* Item 1
+* Item 2
+  * Item 2a
+    * Item 2b
