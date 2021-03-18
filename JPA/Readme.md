@@ -1,0 +1,3 @@
+- JPA - Java Persistence API là một đặc tả API, là một tập hợp các lớp và phương thức để lưu trữ liên tục một lượng lớn dữ liệu vào cơ sở dữ liệu được cung cấp bởi Oracle Corporation.
+- JPA được các ORM framework implements như Hibernate, Eclipselink, OpenJPA
+- JPA thực hiện thao tác trên bản sao của db trước sau đó tác động lên db chính - Persistence 
