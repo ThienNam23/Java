@@ -13,7 +13,7 @@ B, JOINED_TABLE - ghép bảng
   - Trong class cha cần bao gồm:
   	+ @Inheritance(strategy = InheritanceType.JOINED) : chỉ định chiến lược kế thừa: ghép bảng
   - Trong class con cần bao gồm:
-  	+ [Ex]: @PrimaryKeyJoinColumn(referencedColumnName="aid"): chỉ định cột khóa chính để ghép, vd đây là aid
+  	+ @PrimaryKeyJoinColumn(referencedColumnName="aid"): chỉ định cột khóa chính để ghép, vd đây là aid
   -> sau khi chạy: 
    + tạo ra bảng Animal chứa các cột là properties trong class Animal (các properties chung của Dog và Cat), ngoài ra có thêm 1 cột là Dtype chứa tên Entity kế thừa tương ứng với bản ghi dữ liệu của Entity đó
    + tạo ra bảng Dog và Cat chỉ có cột khóa chính aid và các cột tương ứng properties riêng được khai báo trong class riêng của từng Entity
