@@ -1,4 +1,4 @@
 - Sử dụng @ModelAttribute để lấy dữ liệu từ form user gửi đến trong POST method
 - Sử dụng @RequestBody để lấy dữ liệu từ Body trong Postman user gửi đến trong PUT method
-
 - Project có sử dụng Restful, JPA - Hibernate, Spring Boot
+- Về Spring Data JPA: các keyword hỗ trợ trong method name của JPARepository: https://docs.spring.io/spring-data/jpa/docs/2.4.6/reference/html/#jpa.query-methods.query-creation 
