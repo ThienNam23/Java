@@ -9,7 +9,7 @@ A, SINGLE_TABLE - Đơn bảng:
   	+ @DiscriminatorValue(value = "type"): chỉ định giá trị phân biệt sẽ xuất hiện trong bảng chung
   -> sau khi chạy: tạo ra 1 bảng Animal chứa và hiển thị dữ liệu của cả 2 Entity Dog, Cat và thêm 1 cột có tên 'type' có giá trị tương ứng với Entity (đã khai báo trong @DiscriminatorValue(value = "type"))
   
-B, JOINED_TABLE - ghép bảng
+B, JOINED_TABLE - ghép bảng <Hay sử dụng>
   - Trong class cha cần bao gồm:
   	+ @Inheritance(strategy = InheritanceType.JOINED) : chỉ định chiến lược kế thừa: ghép bảng
   - Trong class con cần bao gồm:
