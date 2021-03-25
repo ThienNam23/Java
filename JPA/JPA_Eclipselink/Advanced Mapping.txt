@@ -23,5 +23,5 @@ C, TABLE_PER_CLASS: mỗi bảng cho 1 Entity
   	+ @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) : chỉ định chiến lược kế thừa: tạo bảng cho từng Entity
 
   -> sau khi chạy: 
-   + tạo ra bảng Animal không có recordrỗng/rỗng
+   + tạo ra bảng Animal không có record/rỗng
    + tạo ra bảng Dog và Cat chứa dữ liệu và đầy đủ các cột tương ứng với các properties cả chung và riêng. VD: bảng Dog(aid, aname, color), bảng Cat(aid, aname, species)
