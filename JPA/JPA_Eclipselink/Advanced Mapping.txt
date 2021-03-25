@@ -1,0 +1,27 @@
+ Advanced Mappings: SINGLE_TABLE, JOINED_TABLE, TABLE_PER_CLASS
+ - Giả sử có 3 Entity: Animal(aid, aname), Dog(aid, aname, color), Cat(aid, aname, species)
+ - Dog và Cat cùng kế thừa từ class cha Animal
+A, SINGLE_TABLE - Đơn bảng:
+  - Trong class cha cần bao gồm:
+  	+ @Inheritance(strategy = InheritanceType.SINGLE_TABLE) : chỉ định chiến lược kế thừa: đơn bảng
+  	+ @DiscriminatorColumn(name = "type"): chỉ định tạo thêm 1 cột có tên 'type' trong bảng Animal để phân biệt dữ liệu của các Entity Dog và Cat.
+  - Trong class con cần bao gồm:
+  	+ @DiscriminatorValue(value = "type"): chỉ định giá trị phân biệt sẽ xuất hiện trong bảng chung
+  -> sau khi chạy: tạo ra 1 bảng Animal chứa và hiển thị dữ liệu của cả 2 Entity Dog, Cat và thêm 1 cột có tên 'type' có giá trị tương ứng với Entity (đã khai báo trong @DiscriminatorValue(value = "type"))
+  
+B, JOINED_TABLE - ghép bảng
+  - Trong class cha cần bao gồm:
+  	+ @Inheritance(strategy = InheritanceType.JOINED) : chỉ định chiến lược kế thừa: ghép bảng
+  - Trong class con cần bao gồm:
+  	+ [Ex]: @PrimaryKeyJoinColumn(referencedColumnName="aid"): chỉ định cột khóa chính để ghép, vd đây là aid
+  -> sau khi chạy: 
+   + tạo ra bảng Animal chứa các cột là properties trong class Animal (các properties chung của Dog và Cat), ngoài ra có thêm 1 cột là Dtype chứa tên Entity kế thừa tương ứng với bản ghi dữ liệu của Entity đó
+   + tạo ra bảng Dog và Cat chỉ có cột khóa chính aid và các cột tương ứng properties riêng được khai báo trong class riêng của từng Entity
+
+C, TABLE_PER_CLASS: mỗi bảng cho 1 Entity
+  - Trong class cha cần bao gồm:
+  	+ @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) : chỉ định chiến lược kế thừa: tạo bảng cho từng Entity
+
+  -> sau khi chạy: 
+   + tạo ra bảng Animal không có recordrỗng/rỗng
+   + tạo ra bảng Dog và Cat chứa dữ liệu và đầy đủ các cột tương ứng với các properties cả chung và riêng. VD: bảng Dog(aid, aname, color), bảng Cat(aid, aname, species)
